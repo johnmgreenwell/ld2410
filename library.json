@@ -1,0 +1,27 @@
+{
+  "name": "LD2410",
+  "keywords": "serial, sensor, motion, driver",
+  "description": "Portable, multi-instance driver for LD2410x 24Ghz FMCW radar sensors",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/johnmgreenwell/ld2410"
+  },
+  "authors": 
+  [
+    {
+      "name": "johnmgreenwell",
+      "maintainer": true
+    }
+  ],
+  "version": "1.0.0",
+  "license": "LGPL-2.1",
+  "frameworks": "*",
+  "platforms": "*",
+  "build": {
+    "libArchive": false,
+    "flags": [
+    "-I../../include"
+    ]
+  }
+}
