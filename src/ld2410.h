@@ -1,10 +1,25 @@
+//--------------------------------------------------------------------------------------------------------------------
+// Name        : ld2410.h
+// Purpose     : LD2410 Driver Class
+// Description : This header file defines the LD2410 class.
+// Language    : C++
+// Platform    : Portable
+// Framework   : Portable
+// Note        : Modified from the original authors' version to support custom HAL, John Greenwell, 2025
+//--------------------------------------------------------------------------------------------------------------------
+
 #ifndef MY_LD2410_H
 #define MY_LD2410_H
-#include <Arduino.h>
-#define LD2410_BAUD_RATE 256000
+
+#include "hal.h"
+
+// #define LD2410_BAUD_RATE 256000
 #define LD2410_BUFFER_SIZE 0x40
 
-class MyLD2410
+namespace PeripheralIO
+{
+
+class LD2410
 {
 public:
   enum Response
@@ -74,7 +89,7 @@ private:
   byte inBufI = 0;
   byte headBuf[4];
   byte headBufI = 0;
-  Stream *sensor;
+  HAL::UART *sensor;
   bool _debug = false;
   bool isDataValid();
   bool readFrame();
@@ -84,12 +99,12 @@ private:
 
 public:
   /**
-   * @brief Construct a new MyLD2410 object
+   * @brief Construct a new LD2410 object
    *
    * @param serial - a reference to a stream object (sensorSerial)
    * @param debug - a flag that controls whether debug data will be sent to Serial
    */
-  MyLD2410(Stream &serial, bool debug = false);
+  LD2410(HAL::UART &uart, bool debug = false);
 
   // CONTROLS
 
@@ -105,9 +120,9 @@ public:
 
   /**
     @brief Call this function in the main loop
-    @return MyLD2410::DATA = (true) if the latest frame contained data
-    @return MyLD2410::ACK  = (true) if the latest frame contained a reply to a command
-    @return MyLD2410::FAIL = (false) if no useful info was processed
+    @return LD2410::DATA = (true) if the latest frame contained data
+    @return LD2410::ACK  = (true) if the latest frame contained a reply to a command
+    @return LD2410::FAIL = (false) if no useful info was processed
     */
   Response check();
 
@@ -178,7 +193,7 @@ public:
   /**
    * @brief Get the Stationary Signals object, if in enhanced mode
    *
-   * @return const MyLD2410::ValuesArray& - the signals for each detection gate
+   * @return const LD2410::ValuesArray& - the signals for each detection gate
    */
   const ValuesArray &getStationarySignals();
 
@@ -204,7 +219,7 @@ public:
   /**
    * @brief Get the Moving Signals object, if in enhanced mode
    *
-   * @return const MyLD2410::ValuesArray& - the signals for each detection gate
+   * @return const LD2410::ValuesArray& - the signals for each detection gate
    */
   const ValuesArray &getMovingSignals();
 
@@ -471,5 +486,7 @@ public:
    */
   byte getLightLevel();
 };
+
+}
 
 #endif // MY_LD2410_H
