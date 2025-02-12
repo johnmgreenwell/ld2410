@@ -1,8 +1,25 @@
-# MyLD2410 Arduino library
+# LD2410 Driver
 ## Introduction
 
 This library covers the complete set of serial commands for the HLK-LD2410x presence sensor. 
 It has no external dependencies and will work on any Arduino and ESP32 board.
+
+Modified by John Greenwell to adapt driver for custom HAL support, 2025.
+
+## Usage
+
+For this modified version, the following hardware abstraction layer (HAL) requirements must be satisfied:
+
+* A header file `hal.h` providing access to HAL namespace classes and methods.
+* A UART class within the HAL namespace with the following methods:
+    - Return true if UART data is available in the receive buffer: bool available()
+    - Read and return a single byte from the UART buffer: uint8_t read()
+    - Write n bytes from write buffer to UART device, return number of bytes written: uint32_t write(char *buf, uint32_t n)
+    - Flush the receive buffer of the UART device: void flush()
+* A millis() function in the HAL namespace that returns an accurate milliseconds counter to be used for timing.
+* A delay_ms() function in the HAL namespace that delays an accurate milliseconds to be used for timing.
+
+Some further requirements may also be found. Typically, these will mirror the Arduino framework and should be added to `hal.h`.
 
 HLK-LD2410C<br>
 ![LD2410C](images/ld2410c.png)
